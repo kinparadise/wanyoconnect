@@ -1,0 +1,188 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Dark background color */
+    color: #ffffff; /* Light text color */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#start-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/startbackground.png'); /* Add your background image path here */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#start-menu-content {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    color: #ffffff;
+    animation: fadeIn 2s ease-in-out;
+}
+
+#game-container {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center the game board vertically */
+    background-color: #1e1e1e; /* Dark background color */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    animation: slideIn 1s ease-in-out;
+}
+
+#top-right-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+#info-panel {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+    background-color: #2c2c2c; /* Darker background color */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+    border-radius: 10px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+#timer, #score, #high-score {
+    font-size: 1.2em;
+    color: #ffffff;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* 8 columns */
+    grid-template-rows: repeat(4, 1fr); /* 4 rows */
+    grid-gap: 5px; /* Adjust the gap between tiles as needed */
+    width: 100%;
+    height: auto; /* Adjust the height based on the content */
+    background-color: #1e1e1e; /* Dark background color */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional: Add a shadow to the game board */
+    margin: 0 auto; /* Center the game board horizontally */
+    border-radius: 10px;
+}
+
+.tile {
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1; /* Ensure tiles are square */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #444; /* Dark border */
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.tile.selected {
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.1); /* Light overlay */
+}
+
+.tile.matched {
+    visibility: hidden; /* Hide matched tiles */
+}
+
+.tile.locked {
+    background-color: #333; /* Dark background for locked placeholders */
+    border: 1px solid #444; /* Dark border */
+}
+
+.tile.hint {
+    border: 2px solid #ff4081; /* Vibrant pink border for hints */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #ffffff;
+    background-color: #ff4081; /* Vibrant pink background */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #e91e63; /* Darker pink on hover */
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #2c2c2c; /* Dark background color */
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
