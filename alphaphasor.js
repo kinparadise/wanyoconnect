@@ -37,8 +37,28 @@ let score = 0;
 let hintsUsed = 0;
 let shufflesUsed = 0;
 const maxHints = 3;
-const maxShuffles = 10; // Increased number of shuffles
+const maxShuffles = 5; // Reduced number of shuffles
 let isPaused = false;
+
+function preload() {
+    const images = [];
+    for (let i = 0; i < 16; i++) {
+        const img = new Image();
+        img.src = `images/tile${i}.png`;
+        images.push(img);
+    }
+    const sounds = [
+        'sounds/intro.mp3',
+        'sounds/click.mp3',
+        'sounds/match.mp3',
+        'sounds/win.mp3',
+        'sounds/loss.mp3'
+    ];
+    sounds.forEach(sound => {
+        const audio = new Audio();
+        audio.src = sound;
+    });
+}
 
 function startGame() {
     introSound.loop = true; // Loop the intro sound
@@ -196,6 +216,7 @@ function shuffleTiles() {
         return;
     }
 
+    let hasMatches;
     do {
         const remainingTiles = tiles.filter(tile => !tile.matched);
         const remainingValues = remainingTiles.map(tile => tile.image);
@@ -208,7 +229,8 @@ function shuffleTiles() {
             }
         });
         renderTiles();
-    } while (!hasAvailableMatches());
+        hasMatches = hasAvailableMatches();
+    } while (!hasMatches);
 
     shufflesUsed++;
     updateButtonLabels();
