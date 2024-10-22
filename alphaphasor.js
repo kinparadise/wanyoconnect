@@ -1,4 +1,4 @@
-document.getElementById('start-button').addEventListener('click', startGame);
+document.getElementById('startButton').addEventListener('click', showTileTypeSelection);
 document.getElementById('shuffle-button').addEventListener('click', shuffleTiles);
 document.getElementById('hint-button').addEventListener('click', showHint);
 document.getElementById('pause-button').addEventListener('click', togglePause);
@@ -58,6 +58,36 @@ function preload() {
         const audio = new Audio();
         audio.src = sound;
     });
+}
+
+function showTileTypeSelection() {
+    document.getElementById('startMenu').style.display = 'none';
+    document.getElementById('tileTypeSelection').style.display = 'block';
+}
+
+document.querySelectorAll('.tile-group').forEach(group => {
+    group.addEventListener('click', function() {
+        const selectedType = this.getAttribute('data-type');
+        startTileGame(selectedType);
+    });
+});
+
+function startTileGame(tileType) {
+    document.getElementById('tileTypeSelection').style.display = 'none';
+    document.getElementById('gameContainer').style.display = 'block';
+    // Load the selected tile type images
+    loadTileImages(tileType);
+    startGame();
+}
+
+function loadTileImages(tileType) {
+    const images = [];
+    for (let i = 1; i <= 4; i++) {
+        const img = new Image();
+        img.src = `images/${tileType}_${i}.png`;
+        images.push(img);
+    }
+    // Use these images in the game
 }
 
 function startGame() {

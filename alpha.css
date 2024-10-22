@@ -184,3 +184,20 @@ button:hover {
         transform: translateY(0);
     }
 }
+
+#tileTypeSelection {
+    display: flex;
+    justify-content: space-around;
+}
+
+.tile-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    cursor: pointer;
+}
+
+.tile-group img {
+    width: 100px;
+    height: 100px;
+}
