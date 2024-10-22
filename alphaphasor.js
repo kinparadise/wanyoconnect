@@ -184,6 +184,7 @@ function checkMatch() {
                 }, 500); // Delay to show the matched state before locking
             }
         });
+        matchTiles(document.querySelector(`[data-index="${firstIndex}"]`), document.querySelector(`[data-index="${secondIndex}"]`));
     }
     selectedTiles = [];
     updateTileSelection();
@@ -396,4 +397,36 @@ function hasAvailableMatches() {
         }
     }
     return false;
+}
+
+function drawLine(x1, y1, x2, y2) {
+    const line = document.createElement('div');
+    line.className = 'line';
+    const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+    line.style.width = `${length}px`;
+    line.style.transform = `rotate(${angle}deg)`;
+    line.style.left = `${x1}px`;
+    line.style.top = `${y1}px`;
+    document.body.appendChild(line);
+}
+
+function matchTiles(tile1, tile2) {
+    const rect1 = tile1.getBoundingClientRect();
+    const rect2 = tile2.getBoundingClientRect();
+    const x1 = rect1.left + rect1.width / 2;
+    const y1 = rect1.top + rect1.height / 2;
+    const x2 = rect2.left + rect2.width / 2;
+    const y2 = rect2.top + rect2.height / 2;
+
+    drawLine(x1, y1, x2, y2);
+
+    tile1.classList.add('matched');
+    tile2.classList.add('matched');
+
+    setTimeout(() => {
+        tile1.style.display = 'none';
+        tile2.style.display = 'none';
+        document.querySelector('.line').remove();
+    }, 500);
 }
