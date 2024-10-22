@@ -1,4 +1,4 @@
-document.getElementById('startButton').addEventListener('click', showTileTypeSelection);
+document.getElementById('startButton').addEventListener('click', showTileSelection);
 document.getElementById('shuffle-button').addEventListener('click', shuffleTiles);
 document.getElementById('hint-button').addEventListener('click', showHint);
 document.getElementById('pause-button').addEventListener('click', togglePause);
@@ -60,9 +60,20 @@ function preload() {
     });
 }
 
-function showTileTypeSelection() {
-    document.getElementById('startMenu').style.display = 'none';
-    document.getElementById('tileTypeSelection').style.display = 'block';
+function showTileSelection() {
+    document.getElementById('start-menu').style.display = 'none';
+    document.getElementById('tile-selection').style.display = 'block';
+}
+
+function selectTileType(type) {
+    document.getElementById('tile-selection').style.display = 'none';
+    document.getElementById('game-interface').style.display = 'block';
+    startGame(type);
+}
+
+function startGame(type) {
+    const gameBoard = document.getElementById('game-board');
+    gameBoard.innerHTML = `You selected ${type}. Game logic goes here.`;
 }
 
 document.querySelectorAll('.tile-group').forEach(group => {

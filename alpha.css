@@ -1,5 +1,6 @@
 body {
     font-family: Arial, sans-serif;
+    text-align: center;
     background-color: #f0f0f0; /* Light background color */
     color: #333; /* Dark text color */
     margin: 0;
@@ -8,6 +9,10 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+.section {
+    margin: 20px;
 }
 
 #start-menu {
@@ -191,13 +196,19 @@ button:hover {
 }
 
 .tile-group {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    display: inline-block;
+    margin: 10px;
     cursor: pointer;
 }
 
 .tile-group img {
     width: 100px;
     height: 100px;
+    margin: 5px;
+    border: 2px solid #ccc;
+    transition: transform 0.2s;
+}
+
+.tile-group img:hover {
+    transform: scale(1.1);
 }
