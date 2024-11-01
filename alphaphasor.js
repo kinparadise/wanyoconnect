@@ -62,25 +62,41 @@ function preload() {
     });
 }
 
-// Modify the showTileSelection function to lock each square of images as a single image
+// Ensure this function is defined in alphaphasor.js
 function showTileSelection() {
-    const startMenu = document.getElementById('start-menu');
-    const tileSelectionMenu = document.getElementById('tile-selection-menu');
-    
     startMenu.style.display = 'none';
-    tileSelectionMenu.style.display = 'block';
+    document.getElementById('tile-selection-menu').style.display = 'block';
 }
 
-// Ensure the startGame function is defined and starts the game
-function startGame() {
-    startMenu.style.display = 'none';
-    gameContainer.style.display = 'block';
-    // Initialize the game board, timer, score, etc.
-}
-
+// Ensure this function is defined in alphaphasor.js
 function selectTileType(type) {
-    // Store the selected tile type
-    console.log('Selected tile type:', type);
+    document.getElementById('tile-selection-menu').style.display = 'none';
+    gameContainer.style.display = 'block';
+    initializeGameBoard(type);
+}
+
+function startGame() {
+    console.log('startGame called with typeType:', tileType);
+    const tileSelectionMenu = document.getElementById('tile-selection-menu');
+    const gameContainer = document.getElementById('game-container');
+    
+    tileSelectionMenu.style.display = 'none';
+    gameContainer.style.display = 'block';
+    
+    // Initialize the game board, timer, score, etc.
+    initializeGameBoard(tileType);
+}
+
+function initializeGameBoard(tileType) {
+    console.log('initializeGameBoard called with tileType:', tileType);
+    resetGame();
+    loadTileImages(tileType);
+    const tiles = generateTiles(tileType);
+    renderTiles(tiles);
+    startTimer();
+    updateScore();
+    updateButtonLabels();
+    displayHighScore();
 }
 
 document.querySelectorAll('.tile-group').forEach(group => {
@@ -99,13 +115,15 @@ function startTileGame(tileType) {
 }
 
 function loadTileImages(tileType) {
+    // Load tile images based on the selected tile type
+    // This might involve setting up image paths or preloading images
+    // Example: Preload images
     const images = [];
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 0; i < 4; i++) {
         const img = new Image();
-        img.src = `images/${tileType}_${i}.png`;
+        img.src = `images/${tileType}/tile${i}.png`;
         images.push(img);
     }
-    // Use these images in the game
 }
 
 function startGame() {
@@ -120,19 +138,33 @@ function startGame() {
     startTimer();
 }
 
-function generateTiles() {
-    const tileImages = [];
-    for (let i = 0; i < 16; i++) { // 16 unique images
-        tileImages.push(`images/tile${i}.png`);
+function generateTiles(tileType) {
+    // Generate the tiles based on the selected tile type
+    // Return an array of tile objects
+    const tiles = [];
+    // Example tile generation logic
+    for (let i = 0; i < 16; i++) {
+        tiles.push({
+            id: i,
+            type: tileType,
+            image: `images/${tileType}/tile${i % 4}.png`
+        });
     }
-    const tileValues = [
-        ...tileImages, ...tileImages // Duplicate for pairs
-    ];
-    tileValues.sort(() => Math.random() - 0.5);
-    return tileValues.map(image => ({ image, matched: false }));
+    return tiles;
+}
+
+function renderTiles(tiles) {
+    // Render the tiles on the game board
+    tiles.forEach(tile => {
+        const tileElement = document.createElement('div');
+        tileElement.classList.add('tile');
+        tileElement.style.backgroundImage = `url(${tile.image})`;
+        gameBoard.appendChild(tileElement);
+    });
 }
 
 function renderTiles() {
+    console.log('Rendering tiles');
     const totalTiles = tiles.length;
     const columns = 8; // Number of columns
     const rows = 4; // Number of rows
@@ -245,18 +277,8 @@ function updateScore() {
 }
 
 function resetGame() {
-    clearInterval(timer);
-    timeLeft = 300; // 5 minutes
-    score = 0;
-    hintsUsed = 0;
-    shufflesUsed = 0;
-    isPaused = false;
-    hintButton.disabled = false;
-    shuffleButton.disabled = false;
-    updateScore();
-    timerElement.textContent = `Time: ${formatTime(timeLeft)}`;
-    updateButtonLabels();
-    displayHighScore();
+    // Reset game state, clear the game board, etc.
+    gameBoard.innerHTML = '';
 }
 
 function shuffleTiles() {
