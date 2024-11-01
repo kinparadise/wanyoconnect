@@ -11,33 +11,36 @@
     <div id="start-menu">
         <div id="start-menu-content">
             <h1>Wanyo Connect</h1>
-            <button id="start-button">Start Game</button>
             <div id="high-score-display">High Score: <span id="high-score-value">0</span></div>
+            <button id="mute-button">Mute</button>
+            <button id="info-button">Game Info</button>
+            <button id="start-button" onclick="showTileSelection()">Start Game</button>
         </div>
     </div>
-    <div id="startMenu">
-    <button id="startButton">Start Game</button>
-</div>
 
-<div id="tileTypeSelection" style="display: none;">
-    <div class="tile-group" data-type="type1">
-        <img src="images/tile0.png">
-        <img src="images/tile1.png">
-        <img src="images/tile2.png">
-        <img src="images/tile3.png">
+<div id="tile-selection-menu" style="display:none;">
+    <h2>Select Tile Type</h2>
+    <div id="tileTypeSelection">
+        <div class="tile-group" onclick="selectTileType('type1')">
+            <img src="images/tile0.png" alt="Tile 1-1">
+            <img src="images/tile1.png" alt="Tile 1-2">
+            <img src="images/tile2.png" alt="Tile 1-3">
+            <img src="images/tile3.png" alt="Tile 1-4">
+        </div>
+        <div class="tile-group" onclick="selectTileType('type2')">
+            <img src="path/to/tile2-1.png" alt="Tile 2-1">
+            <img src="path/to/tile2-2.png" alt="Tile 2-2">
+            <img src="path/to/tile2-3.png" alt="Tile 2-3">
+            <img src="path/to/tile2-4.png" alt="Tile 2-4">
+        </div>
+        <div class="tile-group" onclick="selectTileType('type3')">
+            <img src="path/to/tile3-1.png" alt="Tile 3-1">
+            <img src="path/to/tile3-2.png" alt="Tile 3-2">
+            <img src="path/to/tile3-3.png" alt="Tile 3-3">
+            <img src="path/to/tile3-4.png" alt="Tile 3-4">
+        </div>
     </div>
-    <div class="tile-group" data-type="type2">
-        <img src="images/type2_1.png">
-        <img src="images/type2_2.png">
-        <img src="images/type2_3.png">
-        <img src="images/type2_4.png">
-    </div>
-    <div class="tile-group" data-type="type3">
-        <img src="images/type3_1.png">
-        <img src="images/type3_2.png">
-        <img src="images/type3_3.png">
-        <img src="images/type3_4.png">
-    </div>
+    <button id="select-tile-button" onclick="startGame()">Select Tile</button>
 </div>
 </div>
     <div id="game-container" style="display: none;">

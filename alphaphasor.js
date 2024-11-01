@@ -60,20 +60,29 @@ function preload() {
     });
 }
 
+// Modify the showTileSelection function to lock each square of images as a single image
 function showTileSelection() {
-    document.getElementById('start-menu').style.display = 'none';
-    document.getElementById('tile-selection').style.display = 'block';
+    const tiles = document.querySelectorAll('.tile');
+    tiles.forEach(tile => {
+        tile.addEventListener('click', () => {
+            // Lock the tile as a single image
+            tile.classList.add('selected');
+            // Introduce the user to the game interface
+            startGame();
+        });
+    });
+}
+
+// Ensure the startGame function is defined and starts the game
+function startGame() {
+    startMenu.style.display = 'none';
+    gameContainer.style.display = 'block';
+    // Initialize the game board, timer, score, etc.
 }
 
 function selectTileType(type) {
-    document.getElementById('tile-selection').style.display = 'none';
-    document.getElementById('game-interface').style.display = 'block';
-    startGame(type);
-}
-
-function startGame(type) {
-    const gameBoard = document.getElementById('game-board');
-    gameBoard.innerHTML = `You selected ${type}. Game logic goes here.`;
+    // Store the selected tile type
+    console.log('Selected tile type:', type);
 }
 
 document.querySelectorAll('.tile-group').forEach(group => {
@@ -410,23 +419,79 @@ function drawLine(x1, y1, x2, y2) {
     line.style.top = `${y1}px`;
     document.body.appendChild(line);
 }
-
 function matchTiles(tile1, tile2) {
-    const rect1 = tile1.getBoundingClientRect();
-    const rect2 = tile2.getBoundingClientRect();
-    const x1 = rect1.left + rect1.width / 2;
-    const y1 = rect1.top + rect1.height / 2;
-    const x2 = rect2.left + rect2.width / 2;
-    const y2 = rect2.top + rect2.height / 2;
-
-    drawLine(x1, y1, x2, y2);
-
     tile1.classList.add('matched');
     tile2.classList.add('matched');
-
     setTimeout(() => {
         tile1.style.display = 'none';
         tile2.style.display = 'none';
-        document.querySelector('.line').remove();
-    }, 500);
+    }, 1000);
 }
+
+function checkForMatches() {
+    const tiles = getTiles(); // Assume this function gets all the tiles on the board
+    const matchedTiles = [];
+
+    for (let i = 0; i < tiles.length; i++) {
+        for (let j = 0; j < tiles[i].length; j++) {
+            const tile = tiles[i][j];
+
+            // Check for L shape matches
+            if (isLShapeMatch(tiles, i, j)) {
+                matchedTiles.push(tile);
+            }
+
+            // Check for three-sided open rectangle matches
+            if (isThreeSidedOpenRectangleMatch(tiles, i, j)) {
+                matchedTiles.push(tile);
+            }
+        }
+    }
+
+    // Handle matched tiles (e.g., remove them, update score, etc.)
+    handleMatchedTiles(matchedTiles);
+}
+
+function isLShapeMatch(tiles, row, col) {
+    const tile = tiles[row][col];
+
+    // Check all possible L shapes
+    return (
+        (tiles[row + 1] && tiles[row + 1][col] === tile && tiles[row + 1][col + 1] === tile) ||
+        (tiles[row - 1] && tiles[row - 1][col] === tile && tiles[row - 1][col + 1] === tile) ||
+        (tiles[row][col + 1] === tile && tiles[row + 1] && tiles[row + 1][col + 1] === tile) ||
+        (tiles[row][col - 1] === tile && tiles[row + 1] && tiles[row + 1][col - 1] === tile) ||
+        (tiles[row - 1] && tiles[row - 1][col] === tile && tiles[row - 1][col - 1] === tile) ||
+        (tiles[row + 1] && tiles[row + 1][col] === tile && tiles[row + 1][col - 1] === tile) ||
+        (tiles[row][col - 1] === tile && tiles[row - 1] && tiles[row - 1][col - 1] === tile) ||
+        (tiles[row][col + 1] === tile && tiles[row - 1] && tiles[row - 1][col + 1] === tile)
+    );
+}
+
+function isThreeSidedOpenRectangleMatch(tiles, row, col) {
+    const tile = tiles[row][col];
+
+    // Check all possible three-sided open rectangles
+    return (
+        (tiles[row + 1] && tiles[row + 1][col] === tile && tiles[row + 2] && tiles[row + 2][col] === tile && tiles[row + 1][col + 1] === tile) ||
+        (tiles[row - 1] && tiles[row - 1][col] === tile && tiles[row - 2] && tiles[row - 2][col] === tile && tiles[row - 1][col + 1] === tile) ||
+        (tiles[row][col + 1] === tile && tiles[row][col + 2] === tile && tiles[row + 1] && tiles[row + 1][col + 1] === tile) ||
+        (tiles[row][col - 1] === tile && tiles[row][col - 2] === tile && tiles[row + 1] && tiles[row + 1][col - 1] === tile) ||
+        (tiles[row + 1] && tiles[row + 1][col] === tile && tiles[row + 2] && tiles[row + 2][col] === tile && tiles[row + 1][col - 1] === tile) ||
+        (tiles[row - 1] && tiles[row - 1][col] === tile && tiles[row - 2] && tiles[row - 2][col] === tile && tiles[row - 1][col - 1] === tile) ||
+        (tiles[row][col + 1] === tile && tiles[row][col + 2] === tile && tiles[row - 1] && tiles[row - 1][col + 1] === tile) ||
+        (tiles[row][col - 1] === tile && tiles[row][col - 2] === tile && tiles[row - 1] && tiles[row - 1][col - 1] === tile)
+    );
+}
+
+function handleMatchedTiles(matchedTiles) {
+    // Implement logic to handle matched tiles (e.g., remove them, update score, etc.)
+}
+
+// Add this function to your JavaScript file
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+}
+
+// Call this function to enable dark mode
+toggleDarkMode();
