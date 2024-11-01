@@ -1,4 +1,6 @@
-document.getElementById('startButton').addEventListener('click', showTileSelection);
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('startButton').addEventListener('click', showTileSelection);
+});
 document.getElementById('shuffle-button').addEventListener('click', shuffleTiles);
 document.getElementById('hint-button').addEventListener('click', showHint);
 document.getElementById('pause-button').addEventListener('click', togglePause);
