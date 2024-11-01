@@ -62,15 +62,11 @@ function preload() {
 
 // Modify the showTileSelection function to lock each square of images as a single image
 function showTileSelection() {
-    const tiles = document.querySelectorAll('.tile');
-    tiles.forEach(tile => {
-        tile.addEventListener('click', () => {
-            // Lock the tile as a single image
-            tile.classList.add('selected');
-            // Introduce the user to the game interface
-            startGame();
-        });
-    });
+    const startMenu = document.getElementById('start-menu');
+    const tileSelectionMenu = document.getElementById('tile-selection-menu');
+    
+    startMenu.style.display = 'none';
+    tileSelectionMenu.style.display = 'block';
 }
 
 // Ensure the startGame function is defined and starts the game
