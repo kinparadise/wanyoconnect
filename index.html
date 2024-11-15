@@ -1,74 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wanyo Connect</title>
-    <link rel="stylesheet" href="alpha.css">
-    <link rel="icon" href="images/logo.png" type="image/png"> <!-- Favicon -->
-</head>
-<body>
+    <link rel="stylesheet" href="alpha.css" />
+    <link rel="icon" href="images/logo.png" type="image/png" />
+  </head>
+  <body>
     <div id="start-menu">
-        <div id="start-menu-content">
-            <h1>Wanyo Connect</h1>
-            <div id="high-score-display">High Score: <span id="high-score-value">0</span></div>
-            <button id="mute-button">Mute</button>
-            <button id="info-button">Game Info</button>
-            <button id="start-button" onclick="showTileSelection()">Start Game</button>
-        </div>
+      <div id="start-menu-content">
+        <h1>Wanyo Connect</h1>
+        <div id="high-score-display"><span id="high-score-value">0</span></div>
+        <button id="mute-button">Mute</button>
+        <button id="info-button" onclick="showGameInfo()">Game Info</button>
+        <button id="start-button" onclick="showTileSelection()">
+          Start Game
+        </button>
+      </div>
     </div>
 
-<div id="tile-selection-menu" style="display:none;">
-    <h2>Select Tile Type</h2>
-    <div id="tileTypeSelection">
+    <div id="tile-selection-menu" style="display: none">
+      <h2>Select Tile Type</h2>
+      <div id="tileTypeSelection">
         <div class="tile-group" onclick="selectTileType('type1')">
-            <img src="images/tile0.png" alt="Tile 1-1">
-            <img src="images/tile1.png" alt="Tile 1-2">
-            <img src="images/tile2.png" alt="Tile 1-3">
-            <img src="images/tile3.png" alt="Tile 1-4">
+          <img src="images/tile0.png" alt="Tile 1-1" />
+          <img src="images/tile1.png" alt="Tile 1-2" />
+          <img src="images/tile2.png" alt="Tile 1-3" />
+          <img src="images/tile3.png" alt="Tile 1-4" />
         </div>
         <div class="tile-group" onclick="selectTileType('type2')">
-            <img src="path/to/tile2-1.png" alt="Tile 2-1">
-            <img src="path/to/tile2-2.png" alt="Tile 2-2">
-            <img src="path/to/tile2-3.png" alt="Tile 2-3">
-            <img src="path/to/tile2-4.png" alt="Tile 2-4">
+          <img src="path/to/tile2-1.png" alt="Tile 2-1" />
+          <img src="path/to/tile2-2.png" alt="Tile 2-2" />
+          <img src="path/to/tile2-3.png" alt="Tile 2-3" />
+          <img src="path/to/tile2-4.png" alt="Tile 2-4" />
         </div>
         <div class="tile-group" onclick="selectTileType('type3')">
-            <img src="path/to/tile3-1.png" alt="Tile 3-1">
-            <img src="path/to/tile3-2.png" alt="Tile 3-2">
-            <img src="path/to/tile3-3.png" alt="Tile 3-3">
-            <img src="path/to/tile3-4.png" alt="Tile 3-4">
+          <img src="path/to/tile3-1.png" alt="Tile 3-1" />
+          <img src="path/to/tile3-2.png" alt="Tile 3-2" />
+          <img src="path/to/tile3-3.png" alt="Tile 3-3" />
+          <img src="path/to/tile3-4.png" alt="Tile 3-4" />
         </div>
+      </div>
     </div>
-    <button id="select-tile-button" onclick="startGame()">Select Tile</button>
-</div>
-</div>
-    <div id="game-container" style="display: none;">
-        <div id="top-right-buttons">
-            <button id="shuffle-button">Shuffle (5)</button>
-            <button id="hint-button">Hint (3)</button>
-            <button id="pause-button">Pause</button>
-        </div>
-        <div id="info-panel">
-            <div id="timer">Time: 300</div>
-            <div id="score"><span class="star">&#9733;</span> <span id="score-value">0</span></div>
-            <div id="high-score"><span id="high-score-value">High Score: 0</span></div>
-        </div>
-        <div id="game-board"></div>
+
+    <div id="game-info-modal" style="display: none">
+      <div id="game-info-content">
+        <h2>How to play</h2>
+        <p>
+          Match the tiles by clicking on them. Tiles with the same image will
+          disappear. Clear all tiles to win the game.
+        </p>
+        <button id="close-info-button" onclick="closeGameInfo()">Close</button>
+      </div>
     </div>
-    <div id="pause-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-button" id="close-modal">&times;</span>
-            <h2>Game Paused</h2>
-            <p id="pause-message"></p>
+
+    <div id="game-container" style="display: none">
+      <div id="game-board"></div>
+      <div id="top-right-buttons">
+        <button id="shuffle-button">Shuffle (5)</button>
+        <button id="hint-button">Hint (3)</button>
+        <button id="pause-button">Pause</button>
+      </div>
+
+      <div id="info-panel">
+        <div id="timer">Time: 300</div>
+        <div id="score">
+          <span class="star">&#9733;</span> <span id="score-value">0</span>
         </div>
+        <div id="high-score">
+          <span id="high-score-value">High Score: 0</span>
+        </div>
+      </div>
     </div>
-    <div id="game-over-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <h2>Game Over</h2>
-            <p>Your score: <span id="final-score"></span></p>
-            <button id="restart-button">Restart</button>
-        </div>
+    <div id="pause-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close-button" id="close-modal">&times;</span>
+        <h2>Game Paused</h2>
+        <p id="pause-message"></p>
+      </div>
+    </div>
+    <div id="game-over-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h2>Game Over</h2>
+        <p>Your final score: <span id="final-score"></span></p>
+        <button id="restart-button">Restart</button>
+      </div>
     </div>
     <audio id="intro-sound" src="sounds/intro.mp3" loop></audio>
     <audio id="click-sound" src="sounds/click.mp3"></audio>
@@ -76,5 +93,5 @@
     <audio id="win-sound" src="sounds/win.mp3"></audio>
     <audio id="loss-sound" src="sounds/loss.mp3"></audio>
     <script src="alphaphasor.js"></script>
-</body>
+  </body>
 </html>

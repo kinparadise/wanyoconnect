@@ -17,14 +17,17 @@ const shuffleButton = document.getElementById('shuffle-button');
 const pauseButton = document.getElementById('pause-button');
 const pauseModal = document.getElementById('pause-modal');
 const pauseMessage = document.getElementById('pause-message');
-const clickSound = document.getElementById('click-sound');
-const matchSound = document.getElementById('match-sound');
-const winSound = document.getElementById('win-sound');
-const lossSound = document.getElementById('loss-sound');
-const introSound = document.getElementById('intro-sound');
+const clickSound = new Audio('sounds/click.mp3');
+const matchSound = new Audio('sounds/match.mp3');
+const winSound = new Audio('sounds/win.mp3');
+const lossSound = new Audio('sounds/loss.mp3');
+const introSound = new Audio('sounds/intro.mp3');
 const gameOverModal = document.getElementById('game-over-modal');
 const finalScoreElement = document.getElementById('final-score');
 const restartButton = document.getElementById('restart-button');
+
+let currentLevel = 1;
+let currentTileType = '';
 
 restartButton.addEventListener('click', () => {
     gameOverModal.style.display = 'none';
@@ -70,6 +73,7 @@ function showTileSelection() {
 
 // Ensure this function is defined in alphaphasor.js
 function selectTileType(type) {
+    currentTileType = type;
     document.getElementById('tile-selection-menu').style.display = 'none';
     gameContainer.style.display = 'block';
     initializeGameBoard(type);
@@ -90,13 +94,15 @@ function startGame() {
 function initializeGameBoard(tileType) {
     console.log('initializeGameBoard called with tileType:', tileType);
     resetGame();
-    loadTileImages(tileType);
-    const tiles = generateTiles(tileType);
-    renderTiles(tiles);
-    startTimer();
-    updateScore();
-    updateButtonLabels();
-    displayHighScore();
+    loadTileImages(tileType, () => {
+        const tiles = generateTiles(tileType);
+        renderTiles(tiles);
+        startTimer();
+        updateScore();
+        updateButtonLabels();
+        displayHighScore();
+        updateLevelDisplay();
+    });
 }
 
 document.querySelectorAll('.tile-group').forEach(group => {
@@ -114,14 +120,18 @@ function startTileGame(tileType) {
     startGame();
 }
 
-function loadTileImages(tileType) {
-    // Load tile images based on the selected tile type
-    // This might involve setting up image paths or preloading images
-    // Example: Preload images
+function loadTileImages(tileType, callback) {
     const images = [];
+    let loadedImages = 0;
     for (let i = 0; i < 4; i++) {
         const img = new Image();
         img.src = `images/${tileType}/tile${i}.png`;
+        img.onload = () => {
+            loadedImages++;
+            if (loadedImages === 4) {
+                callback();
+            }
+        }
         images.push(img);
     }
 }
@@ -139,11 +149,9 @@ function startGame() {
 }
 
 function generateTiles(tileType) {
-    // Generate the tiles based on the selected tile type
-    // Return an array of tile objects
     const tiles = [];
-    // Example tile generation logic
-    for (let i = 0; i < 16; i++) {
+    const numTiles = 16 + (currentLevel - 1) * 4;
+    for (let i = 0; i < numTiles; i++) {
         tiles.push({
             id: i,
             type: tileType,
@@ -154,11 +162,11 @@ function generateTiles(tileType) {
 }
 
 function renderTiles(tiles) {
-    // Render the tiles on the game board
     tiles.forEach(tile => {
         const tileElement = document.createElement('div');
         tileElement.classList.add('tile');
         tileElement.style.backgroundImage = `url(${tile.image})`;
+        tileElement.addEventListener('click', () => handleTileClick(tile));
         gameBoard.appendChild(tileElement);
     });
 }
@@ -185,6 +193,30 @@ function renderTiles() {
         }
         gameBoard.appendChild(tileElement);
     });
+}
+
+function handleTileClick(tile) {
+    clickSound.play();
+    selectedTiles.push(tile);
+    if (selectedTiles.length === 2) {
+        if (selectedTiles[0].image === selectedTiles[1].image) {
+            matchSound.play();
+            selectedTiles.forEach(t => {
+                const tileElement = document.querySelector(`.tile[style*="url(${t.image})"]`);
+                tileElement.style.visibility = 'hidden';
+            });
+            score += 10;
+            updateScore();
+            selectedTiles = [];
+            if (tiles.every(t => document.querySelector(`.tile[style*="url(${t.image})"]`).style.visibility === 'hidden')) {
+                winSound.play();
+                nextLevel();
+            }
+        } else {
+            lossSound.play();
+            selectedTiles = [];
+        }
+    }
 }
 
 function selectTile(index) {
@@ -277,7 +309,6 @@ function updateScore() {
 }
 
 function resetGame() {
-    // Reset game state, clear the game board, etc.
     gameBoard.innerHTML = '';
 }
 
@@ -513,5 +544,21 @@ function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
 }
 
-// Call this function to enable dark mode
+function updateLevelDisplay() {
+    document.getElementById('level-value').innerText = currentLevel;
+}
+
+function nextLevel() {
+    currentLevel++;
+    initializeGameBoard(currentTileType);
+}
+
+function showGameInfo() {
+    document.getElementById('game-info-modal').style.display = 'block';
+}
+
+function closeGameInfo() {
+    document.getElementById('game-info-modal').style.display = 'none';
+}
+
 toggleDarkMode();

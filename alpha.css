@@ -37,7 +37,7 @@ body.dark-mode {
     background-color: rgba(0, 0, 0, 0.1); /* Light semi-transparent background */
     padding: 20px;
     border-radius: 10px;
-    color: #333;
+    color: #ffffff;
     animation: fadeIn 2s ease-in-out;
 }
 
